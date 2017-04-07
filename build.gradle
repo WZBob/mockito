@@ -52,6 +52,7 @@ allprojects {
 
 configurations {
     testUtil //TODO move to separate project
+    published //for submodules that wish to depend on artifacts published to local repository
 }
 
 dependencies {
@@ -69,6 +70,10 @@ dependencies {
     testRuntime configurations.compileOnly
 
     testUtil sourceSets.test.output
+
+    //adding dependency without any files
+    // just to force publication to trigger when someone resolve this dependency
+    published files().builtBy(tasks.publishToMavenLocal)
 }
 
 task wrapper(type: Wrapper) {

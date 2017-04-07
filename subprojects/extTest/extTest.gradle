@@ -1,10 +1,6 @@
 apply plugin: 'java'
 description = "End-to-end tests for Mockito and its extensions."
 
-//so that we can depend on locally published mockito
-//and test end-to-end mockito jar resolution (for example, flesh out missing dependencies in pom file)
-compileTestJava.dependsOn ":publishToMavenLocal"
-
 repositories {
     mavenLocal() //we depend on locally published mockito
 }
@@ -12,6 +8,10 @@ repositories {
 dependencies {
     testCompile "org.mockito:mockito-core:$version"
     testCompile project(path: ':', configuration: 'testUtil')
+
+    //ensures that mockito core is published to local repository
+    //this way we e2e test Mockito and flesh out problems with pom file
+    testCompile project(path: ':', configuration: 'published')
     testCompile "junit:junit:4.12"
     testCompile 'org.assertj:assertj-core:1.7.1'
 }
